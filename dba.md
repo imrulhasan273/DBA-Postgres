@@ -21,9 +21,53 @@
 
 [Index](#Index)
 
-# **Query-1**
+## **Query-1**
+
+# **Configuration Files**
 
 ---
 
+## Introduction
+
+### `postgresql.conf`
+
+> Controls general settings, such as memory allocation, default storage location for new databases, the IP addresses that PostgreSQLlistens on, location of logs, and plenty more.
+
+### `pg_hba.conf`
+
+> Controls access to the server, dictating which users can log in to which databases, which IP addresses can connect, and which authentication scheme to accept.
+
+## `pg_ident.conf`
+
+```sql
+If present, this file maps an authenticated OS login to a PostgreSQLuser. People sometimes map the OS root account to the PostgresSQLsuperuser account, postgres.
+```
+
+## Scripts
+
+```sql
+select
+	name,
+	setting,
+	category
+from
+	pg_settings
+where
+	category = 'File Locations';
+```
 
 
+---
+
+## Making Configurations Take Effect 
+
+---
+
+## The postgresql.conf file 
+
+---
+
+## The pg_hba.conf file 
+
+---
+---
