@@ -1197,7 +1197,25 @@ ALTER TABLE test.test_table SET TABLESPACE secondary;
 ALTER TABLESPACE pg_default MOVE ALL TO secondary;
 ```
 
+---
 
 
+---
 
+[Index](#Index)
 
+## **Query-10**
+
+# **Verboten Practices**
+
+---
+
+---
+
+- Don’t Delete PostgreSQL Core System Files and Binaries
+- Don’t Give Full OS Administrative Rights to the Postgres System
+Account (postgres)
+- Don’t Set shared_buffers Too High
+- Don’t Try to Start PostgreSQL on a Port Already in Use
+
+---
