@@ -1166,6 +1166,37 @@ pg_restore -h localhost -p 5432 -U postgres --dbname=testdb --schema-only --jobs
 ---
 
 
+## Creating Tablespace
+
+```sql
+---- Creating Tablespaces
+-------------------------
+
+-- Windows OS
+CREATE TABLESPACE secondary LOCATION 'C:\pgdata94_secondary';
+
+
+-- Linux 
+CREATE TABLESPACE secondary LOCATION '/usr/data/pgdata94_secondary';
+```
+
+
+## Moving Objects Between Tablespaces
+
+```sql
+---Moving Objects Between Tablespaces
+-------------------------------------
+
+--To move all objects in the database to our secondary tablespace
+ALTER database testdb SET TABLESPACE secondary;
+
+--To move just one table:
+ALTER TABLE test.test_table SET TABLESPACE secondary;
+
+--To move all objects from default tablespace to secondary:
+ALTER TABLESPACE pg_default MOVE ALL TO secondary;
+```
+
 
 
 
