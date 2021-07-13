@@ -7,12 +7,12 @@
 ---
 
 1. Configuration Files [Query](#Query-1)
-	0. Introduction
-	1. Making Configurations Take Effect 
-	2. The postgresql.conf file 
-	3. The pg_hba.conf file 
+	1. Introduction
+	2. Making Configurations Take Effect 
+	3. The postgresql.conf file 
+	4. The pg_hba.conf file 
 2. Managing Connections [Query](#Query-2)
-	0. Introduction
+	1. Introduction
 3. Check for Queries being blocked [Query](#Query-3)
 4. Roles [Query](#Query-4)
 	1. Creating Roles
@@ -31,11 +31,11 @@
 	1. Installing Extensions 
 	2. Common Extensions 
 8. Backup and Restore [Query](#Query-8)
-	0. Introduction
-	1. Selective Backup Using pg_dump
-	2. Systemwide Backup Using pg_dumpall
-	3. Restoring data using psql
-	4. Restoring data using pg_restore
+	1. Introduction
+	2. Selective Backup Using pg_dump
+	3. Systemwide Backup Using pg_dumpall
+	4. Restoring data using psql
+	5. Restoring data using pg_restore
 9. Managing Disk Storage with Tablespaces [Query](#Query-9)
 	1. Creating Tablespaces
 	2. Moving Objects Among Tablespaces 
