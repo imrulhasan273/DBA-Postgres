@@ -505,25 +505,38 @@ CREATE DATABASE mydb WITH owner = mydb_admin;
 
 ## GRANT
 
-> GRANT The GRANT command assigns privileges to others. The basic usage is: GRANT some_privilege TO some_role;
+- GRANT The GRANT command assigns privileges to others. The basic usage is: 
+
+```sql
+GRANT some_privilege TO some_role;
+```
 
 - A few things to keep in mind when it comes to GRANT:
-	- You need to be the holder of the privilege that you’re granting and you must have
-	- rant privilege yourself. You can’t give away what you don’t have.
+	- You need to be the holder of the privilege that you’re granting and you must have rant privilege yourself. You can’t give away what you don’t have.
 	- Some privileges always remain with the owner of an object and can never be granted away. These include DROP and ALTER.
 	- The owner of an object already has all privileges. Granting an owner privilege in what it already owns is unnecessary.
 	- When granting privileges, you can add WITH GRANT OPTION. This means that the grantee can grant onwards:
+	```sql 
+	GRANT ALL ON ALL TABLES IN SCHEMA public TO mydb_admin WITH GRANT OPTION; 
+	```
 
-- GRANT ALL ON ALL TABLES IN SCHEMA public TO mydb_admin WITH GRANT OPTION;
 	- To grant all relevant privileges on an object use ALL instead of the specific privilege:
-	- GRANT SELECT, REFERENCES, TRIGGER ON ALL TABLES IN SCHEMA my_schema TO PUBLIC;
+	```sql
+	GRANT SELECT, REFERENCES, TRIGGER ON ALL TABLES IN SCHEMA my_schema TO PUBLIC;
+	```
 	- The ALL alias can also be used to grant for all objects within a database or schema:
-
-- GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA my_schema TO PUBLIC;
+	```sql
+	GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA my_schema TO PUBLIC;
+	```
 	- To grant privileges to all roles, you can use the alias PUBLIC:
-- GRANT USAGE ON SCHEMA my_schema TO PUBLIC;
-	- The GRANT command is covered in gorgeous detail in GRANT. We strongly recommend that you take the time to study the few pages before you inadvertently knock a big hole in your security wall. Some privileges are by default granted to PUBLIC. These are CONNECT and CREATE TEMP TABLE for databases, EXECUTE for functions, and USAGE for languages. In many cases you might consider revoking some of defaults for your own safety. Use the REVOKE command:
-- REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA my_schema FROM PUBLIC;
+	```sql
+	GRANT USAGE ON SCHEMA my_schema TO PUBLIC;
+	```
+- The GRANT command is covered in gorgeous detail in GRANT. We strongly recommend that you take the time to study the few pages before you inadvertently knock a big hole in your security wall.
+- Some privileges are by default granted to PUBLIC. These are CONNECT and CREATE TEMP TABLE for databases, EXECUTE for functions, and USAGE for languages. In many cases you might consider revoking some of defaults for your own safety. Use the REVOKE command:
+```sql
+REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA my_schema FROM PUBLIC;
+```
 
 ---
 
@@ -588,7 +601,7 @@ GRANT role_name [, ...] TO role_name [, ...] [ WITH ADMIN OPTION ]
 ### Grant on Function
 
 ```sql
---For all role
+--For All to All role
 GRANT ALL ON FUNCTION training.functionname(varchar,varchar) TO public;
 
 --For role imrul only
@@ -600,6 +613,9 @@ GRANT ALL ON FUNCTION training.functionname(varchar,varchar) TO imrul;
 ### Grant on Procedure
 
 ```sql
+--Grant All to All On Procedure
+GRANT ALL ON PROCEDURE training.procedurename(varchar,varchar,numeric) TO public;
+
 --Grant All to imrul On Procedure
 GRANT ALL ON PROCEDURE training.procedurename(varchar,varchar,numeric) TO imrul;
 ```
@@ -609,10 +625,10 @@ GRANT ALL ON PROCEDURE training.procedurename(varchar,varchar,numeric) TO imrul;
 ### Grant on Table
 
 ```sql
---Grant all prev to imrul on table
+--Grant ALL PRIVILEGES to imrul on table
 GRANT ALL ON TABLE training.tablename TO imrul;
 
---Grant All prev to group role data_analyst on table
+--Grant ALL PRIVILEGES to group role data_analyst on table
 GRANT ALL ON TABLE training.tablename TO data_analyst;
 ```
 
@@ -662,7 +678,7 @@ REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA my_schema FROM PUBLIC;
 
 ---
 
-### Revoke from Public on Func
+### Revoke from Public on Functions in particular Schema
 
 ```sql
 --Revoke On Function in Schema test from public
@@ -671,7 +687,7 @@ REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA test FROM PUBLIC;
 
 ---
 
-### Revoke from a role on Func
+### Revoke from a role on Functions in particular Schema
 
 ```sql
 --Revoke On Function in Schema test from imrul
@@ -733,7 +749,7 @@ Not all extensions need to be in all databases. You should install extensions to
 
 ---
 
-### Installed ext
+### Installed extensions
 
 ```sql
 select
@@ -752,7 +768,7 @@ order by
 
 ---
 
-### Not Installed ext
+### Un Installed extensions
 
 ```sql
 select
@@ -771,10 +787,11 @@ order by
 
 ---
 
-### pckg in ext?
+### Package in extension?
 
 ```sql
 --To get more details about a particular extension already installed on your server, enter the following command from psql:
+
 --psql:
 -------
 \dx+ plpgsql
@@ -799,6 +816,7 @@ where
 ---
 
 ### Installation
+
 
 ```sql
 -----Installing Extensions
@@ -844,25 +862,24 @@ psql -p 5432 -d mydb -c "CREATE EXTENSION fuzzystrmatch;"
 
 ---
 
-### Imp Ext
+### Important Extension
 
-```cmd
-	plpgsql
-	dblink
-	fuzzystrmatch
-	hstore
-	mysql_fdw
-	pg_trgm
-	postgres_fdw
-	tablefunc
-	pg_stat_statements
-```
+- plpgsql
+- dblink
+- fuzzystrmatch
+- hstore
+- mysql_fdw
+- pg_trgm
+- postgres_fdw
+- tablefunc
+- pg_stat_statements
 
----
 
 ---
 
-### Upgr to New Ext
+---
+
+### Upgrade to New Extension
 
 
 - Upgrading to the new extension model
@@ -907,7 +924,7 @@ psql -p 5432 -d mydb -c "CREATE EXTENSION fuzzystrmatch;"
 
 --Selective Backup
 ------------------
---pg_dump	:: backup specific db
+--pg_dump		:: backup specific db
 
 
 --Systemwide Backup
@@ -982,13 +999,11 @@ pg_dump -h localhost -p 5432 -U postgres -F c -b -v -N public -f dvdrental.backu
 ### bkp select tables
 
 ```sql
-
 /*
-To create a plain-text SQL backup of select tables, useful for porting structure and data
-to lower versions of PostgreSQL or non-PostgreSQL databases (plain text generates a
-SQL script that you can run on any system that speaks SQL):
+	To create a plain-text SQL backup of select tables, useful for porting structure and data
+	to lower versions of PostgreSQL or non-PostgreSQL databases (plain text generates a
+	SQL script that you can run on any system that speaks SQL):
 */
-
 pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.backup dvdrental
 ```
 
@@ -998,8 +1013,10 @@ pg_dump -h localhost -p 5432 -U postgres -F p --column-inserts -f select_tables.
 
 ```sql
 --Directory format backup
+--- Example 1:
 pg_dump -h localhost -p 5432 -U someuser -F d -f /somepath/a_directory mydb
 
+--- Example 2: 
 pg_dump -h localhost -p 5432 -U postgres -F d -f D:\ dvdrental
 ```
 
@@ -1009,8 +1026,10 @@ pg_dump -h localhost -p 5432 -U postgres -F d -f D:\ dvdrental
 
 ```sql
 --Directory format parallel backup
+--- Example 1: 
 pg_dump -h localhost -p 5432 -U someuser -j 3 -Fd -f /somepath/a_directory mydb
 
+--- Example 2: 
 pg_dump -h localhost -p 5432 -U postgres -j 3 -Fd -f /somepath/a_directory dvdrental
 ```
 
@@ -1072,7 +1091,7 @@ psql -U postgres -d mydb -f select_objects.sql
 
 ---
 
-## Restoring data using pg_restore
+## Restoring data using pg_restore [Tested by Me]
 
 ---
 
