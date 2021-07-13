@@ -7,17 +7,44 @@
 ---
 
 1. Configuration Files [Query](#Query-1)
+	0. Introduction
+	1. Making Configurations Take Effect 
+	2. The postgresql.conf file 
+	3. The pg_hba.conf file 
 2. Managing Connections [Query](#Query-2)
+	0. Introduction
 3. Check for Queries being blocked [Query](#Query-3)
 4. Roles [Query](#Query-4)
+	1. Creating Roles
+	2. Creating Group Roles
 5. Database Creation [Query](#Query-5)
+	1. Template Databases 
+	2. Using Schemas
 6. Privileges [Query](#Query-6)
+	1. Types of Privileges 
+	2. Getting Started 
+	3. GRANT
+	4. Revoke
+	5. Default Privileges
+	6. Privilege Idiosyncrasies 
 7. Extensions [Query](#Query-7)
+	1. Installing Extensions 
+	2. Common Extensions 
 8. Backup and Restore [Query](#Query-8)
+	0. Introduction
+	1. Selective Backup Using pg_dump
+	2. Systemwide Backup Using pg_dumpall
+	3. Restoring data using psql
+	4. Restoring data using pg_restore
 9. Managing Disk Storage with Tablespaces [Query](#Query-9)
+	1. Creating Tablespaces
+	2. Moving Objects Among Tablespaces 
 10. Verboten Practices [Query](#Query-10)
 
 ---
+
+---
+
 
 [Index](#Index)
 
@@ -1118,6 +1145,8 @@ pg_restore -h localhost -p 5432 -U postgres --dbname=testdb --schema-only --jobs
 ---
 
 ---
+
+
 
 
 
