@@ -20,7 +20,7 @@
     3. Querying Other PostgreSQLServers 
     4. Querying Other Tabular Formats with ogr_fdw
     5. Querying Nonconventional Data Sources
-    
+
 ---
 
 ---
@@ -30,6 +30,6 @@
 
 ## **Query-1**
 
-# **Configuration Files**
+# **Replication Overview**
 
 ---
