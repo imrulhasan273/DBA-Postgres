@@ -52,7 +52,7 @@ explain select * from training.dayend_balance_table;
 explain (analyze) select * from training.dayend_balance_table;
 ```
 
-![](i/2.png)
+![](i/3.png)
 
 
 ```sql
@@ -60,20 +60,20 @@ explain (analyze) select * from training.dayend_balance_table;
 explain (VERBOSE) select * from training.dayend_balance_table;
 ```
 
-![](i/2.png)
+![](i/4.png)
 
 ```sql
 --report share hits
 explain (analyze,buffers) select * from training.dayend_balance_table;
 ```
 
-![](i/2.png)
+![](i/5.png)
 
 ```sql
 --all details, including timing, output of columns, and buffers
 explain (analyze,verbose,buffers) select * from training.dayend_balance_table ;
 ```
 
-![](i/2.png)
+![](i/6.png)
 
 ---
