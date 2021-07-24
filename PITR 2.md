@@ -100,8 +100,18 @@ postgres=# select * from current_timestamp; -- 2021-07-24 16:19:08.496295+06
 
 ---
 
-- databasename
-- pitr
+- Traditional Methods to create `Base Backups`
+
+```sql
+postgres=# select pg_start_backup('Full Backup - Testing');
+postgres=# select pg_stop_backup(); 
+```
+
+> The main advantage of this Traditional Methods instead of pg_basebackup is that there is no need to open a database connection, and no need to configure the XLOG streaming infrastructure on the source server.
+
+> Another main advantage is that you can make use of features such as ZFS snapshots or similar means that can help reduce dramatically the amount of I/O needed to create an initial backup.
+
+---
 
 5. **BACKUP** using `pg_dump` with plain `sql`
 
@@ -132,21 +142,19 @@ postgres=# DROP SCHEMA pitr CASCADE;
 ```
 
 
-6. If any incident occurred (Or Manually need to stop the db)
+## Restoring Process
+
+6. **Restore** using `psql`
+
+```sql
+cmd> psql -h localhost -p 5432 -U postgres -d postgres -f D:\pg_dump\pitr.sql
+```
+
+7. If any incident occurred (Or Manually need to stop the db)
 
 - Now stop the db
 
 ```sql
-cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" stop
-```
-
-## Restoring Process
-
-7. **Restore** using `psql`
-
-```sql
-cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" start
-cmd> psql -h localhost -p 5432 -U postgres -d postgres -f D:\pg_dump\pitr.sql
 cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" stop
 ```
 
