@@ -78,6 +78,12 @@ cmd> \c postgres --You are now connected to database "postgres" as user "postgre
 CREATE SCHEMA pitr;
 ```
 
+- Listing all Tables in Schema `pitr`
+
+```sql
+\dt pitr.*
+```
+
 - `Create table 1`
 
 ```sql
