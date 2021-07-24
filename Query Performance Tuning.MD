@@ -77,3 +77,7 @@ explain (analyze,verbose,buffers) select * from training.dayend_balance_table ;
 ![](i/6.png)
 
 ---
+
+
+
+
