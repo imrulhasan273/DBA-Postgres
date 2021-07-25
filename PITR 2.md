@@ -16,6 +16,17 @@
 ---
 
 
+## Flow
+
+1. Some Operation 
+2. take `pg_dump` to a location
+3. Some Operation
+4. Drop Schema where operations took place
+5. restore the `pg_dump`
+6. Run PITR
+
+---
+
 ## **Initial**
 
 1. Install Postgres `10` or `13` on directory `"D:\InstalledPostgreSQL"`
