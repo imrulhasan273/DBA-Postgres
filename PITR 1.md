@@ -2,6 +2,17 @@
 
 ---
 
+## Flow
+
+1. Some Operation 
+2. Taking `Base Back Up` and Copy `"D:\InstalledPostgreSQL\data"` Folder in Remote Location. 
+3. Some Operation
+4. Delete the `data` folder in `"D:\InstalledPostgreSQL\data"`
+5. Then Take back the `data` folder which was taken as backup in remote location.
+6. Run PITR
+
+---
+
 ## Connect postgres in CMD windows
 
 ```sql
