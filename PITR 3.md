@@ -6,19 +6,19 @@
 
 ## Flow 
 
-1. TK Backup
-2. Loading backup [`dump` file]
+1. DB Backup
+2. Loading **backup** [`dump` file, exm: `.sql dump`]
 3. Taking Base Backup
+    - Run `Traditional` commands of `basebackup`
     - `data` folder copy to remote location
-    - Run `traditional` commands of `basebackup`
 4. Some Operation [DDL/DML] 
+    - Create tables and Insert Operations
     - Note the `time` after operations
 5. Drop the **point(4)** `tables` 
-6. Restore the point(4) table using PITR
+6. Restore the **point(4)** table using PITR
     - Remove the `data` folder
-    - Take back the `Base Backup` from remote location to where the data folder exists
+    - Take back the `Base Backup` (`data` folder) from remote location to where the data folder should exist
     - PITR using `recovery_target_time` and `recovery_command`
-
 ---
 
 ## Some DB Commands
