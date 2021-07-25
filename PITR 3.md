@@ -72,6 +72,13 @@ postgres=# select * from current_timestamp;
 
 - Note the `time` after operations
 
+## Drop the Tables `pitr.testPITR3` and  `pitr.testPITR3`
+
+```sql
+drop table pitr.testpitr3;
+drop table pitr.testpitr4;
+```
+
 ## Stop the DB server
 
 ```sql
@@ -111,7 +118,7 @@ recovery_target_time = '2021-07-23 22:36:03.418849+06'
 ## Need to restart the db. Automatically restoring will be started
 
 ```sql
-cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" start
+cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" restart
 ```
 
 ## Need to resume the DB from Recovering mode
