@@ -50,11 +50,10 @@ cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" restart
 ```sql
 cmd> psql -U postgres
 ```
-
 - Some Operations
 
 ```sql
-postgres=# create table testPITR1 as select * from pg_class, pg_description;  ---DDL activity
+postgres=# create table pitr.testPITR1 as select * from pg_class, pg_description;  ---DDL activity
 postgres=# select * from current_timestamp; -- 2021-07-23 21:48:11.281186+06
 ```
 
@@ -69,42 +68,32 @@ postgres=# select pg_stop_backup();
 
 > Another main advantage is that you can make use of features such as ZFS snapshots or similar means that can help reduce dramatically the amount of I/O needed to create an initial backup.
 
-6. Need to copy directory `"(D:\InstalledPostgreSQL\data)"` as backup into remote location as `ihdata`.
+6. Need to copy directory `"(D:\InstalledPostgreSQL\data)"` as backup into remote location as `data` (same name as it is).
 
 > This backup is called **Base Backup**
 
 7. Need to perform `DML/DDL` activity. Timestamp needs to be captured
 
 ```SQL
-postgres=# create table testPITR2 as select * from pg_class, pg_description;  ---DDL activity
+postgres=# create table pitr.testPITR2 as select * from pg_class, pg_description;  ---DDL activity
 postgres=# select * from current_timestamp; -- 2021-07-23 22:15:09.980697+06
 ```
 
-```SQL
-postgres=# create table testPITR3 as select * from pg_class, pg_description;  ---DDL activity
-postgres=# select * from current_timestamp; -- 2021-07-23 22:22:05.974484+06
-```
-
-```SQL
-postgres=# create table testPITR4 as select * from pg_class, pg_description;  ---DDL activity
-postgres=# select * from current_timestamp; -- 2021-07-23 22:36:03.418849+06
-```
-
-- Truncate `testPITR4` table 
+- Truncate `pitr.testPITR2` table 
 
 ```sql
 postgres=# select count
-postgres=# (1) from testpitr4;  --millions of rows 
+postgres=# (1) from pitr.testPITR2;  --millions of rows 
 
-postgres=# truncate table testpitr4;
+postgres=# truncate table pitr.testPITR2;
 
 postgres=# select count
-postgres=# (1) from testpitr4;  --0 rows
+postgres=# (1) from pitr.testPITR2;  --0 rows
 
 postgres=# select * from current_timestamp; --2021-07-23 22:55:28.175244+06
 ```
 
-> Here we `truncate` data of `testpitr4` table by mistake. We need to go to the state(time) when `testpitr4` table have data. 
+> Here we `truncate` data of `testpitr2` table by mistake. We need to go to the state(time) when `testpitr2` table have data. 
 
 
 8. If any incident occurred (Or Manually need to stop the db)
@@ -129,35 +118,37 @@ cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" stop
 
 11. Need to take back copy of `"(D:\InstalledPostgreSQL\data)"` from the remote location `[Point: 6]`
 
-> The **base backup** data folder was named as `ihdata`. Just **copy** and **past** the folder in `"(D:\InstalledPostgreSQL\)"` location.
+> The **base backup** data folder was named as `data` in remote location. Just **copy** and **past** the folder in `"(D:\InstalledPostgreSQL\)"` location.
 
 12. Configure or create recovery file in `Base Backup` folder.
 
-- `[v13]` Need to configure the restoring `(D:\InstalledPostgreSQL\ihData\postgresql.conf)`
+- `[v13]` Need to configure the restoring `(D:\InstalledPostgreSQL\data\postgresql.conf)`
 
 ```cmd
 restore_command = 'copy "D:\\ihPgDataPITR\\%f" "%p"'
 recovery_target_time = '2021-07-23 22:36:03.418849+06'
 ```
 
-- `[v10]` Need to create recovery configure file `(D:\InstalledPostgreSQL\ihData\recovery.conf)`
+- `[v10]` Need to create recovery configure file `(D:\InstalledPostgreSQL\data\recovery.conf)`
 
 ```cmd
 restore_command = 'copy "D:\\ihPgDataPITR\\%f" "%p"'
 recovery_target_time = '2021-07-23 22:36:03.418849+06'
 ```
 
-> Here, We have full data on time `'2021-07-23 22:36:03.418849+06'`. We truncated our `testpitr4` table on `'2021-07-23 22:55:28.175244+06'`. So recovery_target_time should be the time when we have full data thats `'2021-07-23 22:36:03.418849+06'`.
+> Here, We have full data on time `'2021-07-23 22:36:03.418849+06'`. We truncated our `testpitr2` table on `'2021-07-23 22:55:28.175244+06'`. So recovery_target_time should be the time when we have full data thats `'2021-07-23 22:36:03.418849+06'`.
 
-13. Need to create signal file `recovery.signal` in `"(D:\InstalledPostgreSQL\ihdata)"` (Base Backup)
+13. Need to create signal file `recovery.signal` in `"(D:\InstalledPostgreSQL\data)"` (Base Backup)
 
 > this `recovery.signal` is just an empty file which indicates that data should start recovering when db starts.
+
+> Its not mandatory for `v10`.
 
 14. Need to restart the db. Automatically restoring will be started
 
 ```sql
-cmd> pg_ctl -D "D:\InstalledPostgreSQL\ihdata" restart
-cmd> pg_ctl -D "D:\InstalledPostgreSQL\ihdata" start
+cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" restart
+cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" start
 ```
 
 > After `start` the **db** again the `recovery` will start. 
@@ -170,18 +161,16 @@ postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
 
 - `[v13] `
 
-> `ihdata\recovery.signal`file will be removed 	
+> `data\recovery.signal`file will be removed 	
 
 - `[v10]`
 
-> `ihdata\recovery.conf` file will be renamed as `recovery.done`
+> `data\recovery.conf` file will be renamed as `recovery.done`
 
 
 16. Now DB is perfect!! If needed **Base Backup** can be taken
 
-> Now we can renamed the folder `ihdata` as `data` after confirmed.
-
-> Also start the db again for `data`
+- We can now safely delete the folder `data_bkp` from `D:\InstalledPostgreSQL\` location.
 
 ```sql
 cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" start
@@ -194,9 +183,7 @@ cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" start
 ```cmd
 testpitr1 : '2021-07-23 21:48:11.281186+06'					
 bkp-01
-testpitr2 : '2021-07-23 22:15:09.980697+06'
-testpitr3 : '2021-07-23 22:22:05.974484+06' 
-testpitr4 : '2021-07-23 22:36:03.418849+06' truncate='2021-07-23 22:55:28.175244+06'
+testpitr2 : '2021-07-23 22:36:03.418849+06' truncate='2021-07-23 22:55:28.175244+06'
 ```
 
 ---
