@@ -45,10 +45,36 @@ cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" status
 cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" restart
 ```
 
-5. Need to take the **base backup** after (if needed) few DDL/DML operation
+### Some DDL and DML Operations before Base Backup
+
+- Connect to postgresql as user `postgres`
 
 ```sql
 cmd> psql -U postgres
+```
+
+- Listing `DB's`
+
+```sql
+cmd> \l
+```
+
+- Connect to the DB `postgres`
+
+```sql
+cmd> \c postgres --You are now connected to database "postgres" as user "postgres".
+```
+
+- Creating schema `pitr`
+
+```sql
+CREATE SCHEMA pitr;
+```
+
+- Listing all Tables in Schema `pitr`
+
+```sql
+\dt pitr.* 
 ```
 - Some Operations
 
@@ -56,6 +82,8 @@ cmd> psql -U postgres
 postgres=# create table pitr.testPITR1 as select * from pg_class, pg_description;  ---DDL activity
 postgres=# select * from current_timestamp; -- 2021-07-23 21:48:11.281186+06
 ```
+
+5. Need to take the **Base Backup** 
 
 - Traditional Methods to create base backups
 
