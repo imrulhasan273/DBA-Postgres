@@ -155,10 +155,20 @@ postgres=# DROP SCHEMA pitr CASCADE;
 
 ## Restoring Process
 
+- https://www.enterprisedb.com/postgres-tutorials/how-use-pgdump-and-pgrestore-multi-host-enviorment
+
 6. **Restore** using `psql`
 
 ```sql
 cmd> psql -h localhost -p 5432 -U postgres -d postgres -f D:\pg_dump\pitr.sql
+```
+
+> **POINT TO BE NOTED:** when restoring the dump file then data will be `appended` on the table if `table` and `schema` already **exists**. Otherwise fresh schema or table will be created then load.
+
+- Using `pg_restore`
+
+```sql
+cmd> pg_restore -h localhost -p 5432 -U postgres -d postgres < D:\pg_dump\pitr.sql
 ```
 
 7. If any incident occurred (Or Manually need to stop the db)

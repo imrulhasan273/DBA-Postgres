@@ -42,6 +42,9 @@ cmd> pg_ctl -D "D:\InstalledPostgreSQL\data" status
 cmd> psql -h localhost -p 5432 -U postgres -d postgres -f D:\pg_dump\pitr.sql
 ```
 
+> **POINT TO BE NOTED:** when restoring the dump file then data will be `appended` on the table if `table` and `schema` already **exists**. Otherwise fresh schema or table will be created then load.
+
+
 ## Taking `Base Backup`
 
 - Traditional Methods to create base backups
@@ -110,9 +113,9 @@ restore_command = 'copy "D:\\ihPgDataPITR\\%f" "%p"'
 recovery_target_time = '2021-07-23 22:36:03.418849+06'
 ```
 
-## Need to create signal file recovery.signal in `"(D:\InstalledPostgreSQL\data)"` (Base Backup)
+## Need to create signal file `recovery.signal` in `"(D:\InstalledPostgreSQL\data)"` (Base Backup)
 
-- this recovery.signal is just an empty file which indicates that data should start recovering when db starts.
+- this `recovery.signal` is just an empty file which indicates that data should start recovering when db starts.
 - Its not mandatory for v10.
 
 ## Need to restart the db. Automatically restoring will be started
@@ -129,11 +132,11 @@ postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
 
 - [v13]
 
-> data\recovery.signalfile will be removed
+> `data\recovery.signal` file will be removed
 
 - [v10]
 
-> data\recovery.conf file will be renamed as recovery.done
+> `data\recovery.conf` file will be renamed as recovery.done
 
 ## Now DB is perfect!! If needed Base Backup can be taken
 
