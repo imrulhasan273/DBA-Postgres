@@ -24,7 +24,7 @@
 
 ---
 
-### Act as `root` user
+### Step 1: Act as `root` user
 
 ```shell
 imrul@master :~$ sudo -i
@@ -32,7 +32,7 @@ imrul@master :~$ sudo -i
 
 ---
 
-### cd to `/var/mnt` directory
+### Step 2: cd to `/var/mnt` directory
 
 ```shell
 imrul@master :~$ cd /var/mnt
@@ -40,7 +40,7 @@ imrul@master :~$ cd /var/mnt
 
 ---
 
-### Create a directory in this location
+### Step 3: Create a directory in this location
 
 ```shell    
 imrul@master :~$ sudo mkdir pgDataPITR          # This folder contains data that to be shared with another server
@@ -53,7 +53,7 @@ imrul@master :~$ sudo chmod a+rwx pgDataPITR    # This folder needs permission
 
 ---
 
-### Act as `root` user
+### Step 1: Act as `root` user
 
 ```shell
 imrul@slave :~$ sudo -i
@@ -61,7 +61,7 @@ imrul@slave :~$ sudo -i
 
 ---
 
-### cd to `/mnt` directory
+### Step 2: cd to `/mnt` directory
 
 ```shell
 imrul@slave :~$ cd /mnt
@@ -69,14 +69,14 @@ imrul@slave :~$ cd /mnt
 
 ---
 
-### Create a directory in this location
+### Step 3: Create a directory in this location
 
 ```shell
 imrul@slave :~$ sudo mkdir pgDataPITR           # This folder is mountpoint. All the data of IP:10.9.0.222 are shared on this IP:10.9.0.223
 # imrul@slave :~$ sudo chmod a+rwx pgDataPITR   # Not necessary
 ```
 
-### SSHSF from `Slave`
+### Step 4: **SSHFS** from `Slave`
 
 ```shell
 imrul@slave :~$ sshfs imrul@10.9.0.222:/var/mnt/pgDataPITR /mnt/pgDataPITR
