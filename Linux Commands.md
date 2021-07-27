@@ -2,7 +2,7 @@
 
 ---
 
-### Linuex Version
+### Linux Version
 
 ```shell
 ~:$ cat /etc/os-release
@@ -11,7 +11,7 @@
 ### Act as `root` user
 
 ```shell
-sudo -i
+~:$ sudo -i
 ```
 
 ### Create a folder
@@ -36,7 +36,7 @@ sudo -i
 
 - [Instructions](https://snapcraft.io/install/gedit/centos)
 
-### `File/Folder` Permissions
+### File/Folder Permissions
 
 ```shell
 ~:$ sudo chmod a+rwx folder # Full Permission on Folder
