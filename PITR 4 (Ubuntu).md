@@ -265,18 +265,27 @@ postgres=# select * from current_timestamp;
 imrul@pc:/$ sudo systemctl stop postgresql
 ```
 
-### Step 2: Restore Configuration in `postgres.conf`
+### Step 2: Get back the `basebackup` folder
+
+- Need to rename `/var/lib/postgresql/13/main` to `/var/lib/postgresql/13/main_bkp"`
+
+- Need to take back copy of `main1` from the remote location
+
+- rename `main1` to `main`
+
+
+### Step 3: Restore Configuration in `postgres.conf`
 
 ```text
 restore_command = 'cp /var/lib/postgresql/13/pgDataPITR/%f %p'
 recovery_target_time = '2021-07-26 22:19:20.303399+06'
 ```
 
-### Step 3: Create `recovery.signal` file
+### Step 4: Create `recovery.signal` file
 
 - this `recovery.signal` is just an empty file which indicates that data should start recovering when db starts.
 
-### Step 4: Restart the server
+### Step 5: Restart the server
 
 ```shell
 imrul@pc:/$ sudo systemctl restart postgresql
@@ -298,7 +307,7 @@ imrul@pc:/$ sudo chmod -R 0700 /var/lib/postgresql/13/main
 imrul@pc:/$ sudo systemctl start postgresql
 ```
 
-### Step 5: Need to resume the DB from Recovering mode
+### Step 6: Need to resume the DB from Recovering mode
 
 ```sql
 postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
