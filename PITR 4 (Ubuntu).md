@@ -298,7 +298,7 @@ imrul@pc:/$ sudo chmod -R 0700 /var/lib/postgresql/13/main
 imrul@pc:/$ sudo systemctl start postgresql
 ```
 
-### Step 4: Need to resume the DB from Recovering mode
+### Step 5: Need to resume the DB from Recovering mode
 
 ```sql
 postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
