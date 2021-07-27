@@ -143,7 +143,7 @@ postgres=# drop schema pitr;	-- Drop pitr schema
 
 ---
 
-# **POINT IN TIME RECOVERY** - LINUX**
+# **POINT IN TIME RECOVERY - LINUX**
 
 ---
 
