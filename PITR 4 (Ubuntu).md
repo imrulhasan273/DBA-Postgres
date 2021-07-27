@@ -312,13 +312,14 @@ postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
 
 ---
 
+```cmd
 pitr 1: 2021-07-26 22:05:27.898092+06
 bkp1
 pitr 2: 2021-07-26 22:11:39.419188+06
 bkp2
 pitr 3: 2021-07-26 22:19:20.303399+06
 drop 2 & 3: 
-
+```
 
 
 
