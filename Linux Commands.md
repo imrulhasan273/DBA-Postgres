@@ -126,3 +126,10 @@
 ```
 
 ---
+
+
+### 
+
+```shell
+rm -rf archive_wal_dir/*
+```

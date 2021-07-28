@@ -1,3 +1,69 @@
+# **Postgres System Operation**
+
+---
+
+```shell
+~:$ sudo systemctl status postgresql    # Need to be run from root user
+~:$ sudo systemctl reload postgresql    # Need to be run from root user
+~:$ sudo systemctl restart postgresql   # Need to be run from root user
+~:$ sudo systemctl start postgresql     # Need to be run from root user
+```
+
+---
+
+# **Some Important Task to Do**
+
+---
+
+### Change password of user `postgres`
+
+```sql
+ALTER USER postgres WITH PASSWORD 'postgres';  --need to be run from psql
+```
+
+### Switch between user
+
+```shell
+imrul@progoti:~$ sudo -i -u postgres   # act as postgres user
+postgres@progoti:~$ 
+```
+
+### Some `psql` Operation in db
+
+```sql
+postgres@progoti:~$ psql        -- psql mode 
+postgres=# \l			        -- show dbs
+postgres=# \c postgres 	        -- connect db postgres
+postgres=# \dt 		            -- Show tables in public schema
+postgres=# create schema pitr;  -- create schema pitr
+postgres=# \dt pitr.*;	        -- show all tables in pitr schema.
+postgres=# drop table pitr.test;-- Drop test table in pitr schema
+postgres=# drop schema pitr;	-- Drop pitr schema
+postgres=# set timezone TO 'GMT+6'; -- Set time zone correctly
+```
+
+---
+
+## **Backup and Restore**
+
+---
+
+### Backup db using pg_dump
+
+```shell
+~:$ pg_dump -h localhost -p 5432 -U postgres -d postgres -n pitr >> /var/lib/pgsql/10/pg_dump/pitr.sql
+```
+
+### Restore db using psql
+
+```shell
+~:$ psql -h localhost -p 5432 -U postgres -d postgres -f /var/lib/pgsql/10/pg_dump/pitr.sql
+```
+
+---
+
+---
+
 # **POINT IN TIME RECOVERY - LINUX**
 
 ---
@@ -29,6 +95,7 @@
 ~:$ less /var/lib/pgsql/10/data/postgresql.conf    # to open the file using Command 
 ~:$ more /var/lib/pgsql/10/data/postgresql.conf    # to open the file using Command 
 ```
+
 
 ## **Archiving**
 
