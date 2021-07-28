@@ -95,7 +95,7 @@ listen_addresses = '*'
 
 
 ```sql
-postgres=# CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'admin@123';
+postgres=# CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'replicator' ;
 ```
 
 ---
@@ -127,11 +127,11 @@ sudo systemctl status postgresql-13
 
 ---
 
-### Step 1: Check If Slave Server is running
+### Step 1: Stop the Slave Server
 
 ```shell
-sudo systemctl restart postgresql-13
 sudo systemctl status postgresql-13
+sudo systemctl stop postgresql-13
 ```
 
 ---
@@ -156,8 +156,13 @@ rm -rf /var/lib/postgresql/13/data
 ```shell
 pg_basebackup -h 10.9.0.222 -D /var/lib/postgresql/13/data/ -U replicator -P -v -R -X stream -C -S slaveslot1
 ```
+- Note: `right` ownership with `postgres`
 
-> Now put password 
+```shell
+sudo chown -R postgres /var/lib/pgsql/13/data   # This ownership need to be set in Master Server
+```
+
+> Then provide the password for user `replicator` created in master server.
 
 ---
 
