@@ -136,3 +136,10 @@ rm -rf archive_wal_dir/*
 
 ---
 
+
+
+```shell
+find /var/lib/postgresql/13/data/ -type f -exec stat \{} --printf="%y\n" \; | 
+     sort -n -r | 
+     head -n 1
+```

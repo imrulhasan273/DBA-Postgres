@@ -247,7 +247,14 @@ select * from pg_stat_replication;
 
 - ![](i/16.png)
 
+- Slaves `/var/lib/postgresql/13/data/`
+
+> ![](i/17.png)
+
 ---
+
+---
+
 
 
 
