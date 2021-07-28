@@ -24,9 +24,58 @@
 
 ## Initial Set Up 
 
+### Shell Scripts to Backup and Restore automation
+
 ```shell
 imrul@pc:/$ cp -R /home/imrul/scripts /var/lib/pgsql/13/scripts # Once in every fresh installation of PG
 ```
+
+![](i/7.png)
+
+> The above `scripts` folder contains the belows 3 files. 
+
+- base.sh
+
+```bash
+#!/bin/bash
+cd /var/lib/pgsql/13/
+cp -R data base_bkp/data$(date +_%y%m%d_%H%M)
+
+```
+
+- view.sh
+
+```bash
+#!/bin/bash
+cd /var/lib/pgsql/13/base_bkp
+ls
+
+```
+
+- restore.sh
+
+```bash
+#!/bin/bash
+cd /var/lib/pgsql/13/
+read bkpname
+DIR="base_bkp/"$bkpname
+if [ -d "$DIR" ]; then
+    # Take action if $DIR exists. #
+    echo "${DIR} is exists"
+    mv data bkp/data_bkp$(date +_%y%m%d_%H%M)
+    cp -R base_bkp/$bkpname data
+else
+  ###  Control will jump here if $DIR does NOT exists ###
+  echo "${DIR} is not exists"
+#   exit 1
+fi
+```
+
+---
+
+### Master to Slave Archiving folder set up
+
+- See the docx `Mounting`
 
 ---
 
