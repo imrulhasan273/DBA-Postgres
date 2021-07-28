@@ -8,6 +8,8 @@
 
 - [Installation Steps](https://sdbaddas.blogspot.com/2016/08/how-to-install-sshfs-on-centosrhelubuntu.html)
 
+- [Video](https://www.youtube.com/watch?v=ThFvgdpFW8s)
+
 ---
 
 ## General Syntax
