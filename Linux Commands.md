@@ -139,7 +139,13 @@ rm -rf archive_wal_dir/*
 
 
 ```shell
-find /var/lib/postgresql/13/data/ -type f -exec stat \{} --printf="%y\n" \; | 
+find /var/lib/pgsql/13/data -type f -exec stat \{} --printf="%y\n" \; | 
      sort -n -r | 
      head -n 1
+
+find /var/lib/pgsql/13/data -printf "%TY-%Tm-%Td %TT\n" | sort -nr | head -n 1
+
 ```
+
+
+

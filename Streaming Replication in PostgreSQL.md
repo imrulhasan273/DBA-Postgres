@@ -143,8 +143,8 @@ sudo systemctl stop postgresql-13
 ---
 
 ```shell
-cp -R /var/lib/postgresql/13/data/ /var/lib/postgresql/13/data_old/
-rm -rf /var/lib/postgresql/13/data
+cp -R /var/lib/pgsql/13/data/ /var/lib/pgsql/13/data_old/
+rm -rf /var/lib/pgsql/13/data
 ```
 
 ---
@@ -247,7 +247,7 @@ select * from pg_stat_replication;
 
 - ![](i/16.png)
 
-- Slaves `/var/lib/postgresql/13/data/`
+- Slaves `/var/lib/pgsql/13/data/`
 
 > ![](i/17.png)
 
