@@ -24,7 +24,7 @@
 
 ## Initial Set Up 
 
-### Shell Scripts to Backup and Restore automation
+### Step 1: Shell Scripts to Backup and Restore automation
 
 ```shell
 imrul@pc:/$ cp -R /home/imrul/scripts /var/lib/pgsql/13/scripts # Once in every fresh installation of PG
@@ -73,9 +73,9 @@ fi
 
 ---
 
-### Master to Slave Archiving folder set up
+### Step 2: Master to Slave Archiving folder set up
 
-- See the docx `Mounting`
+- See the docx [Mounting](https://github.com/imrulhasan273/DBA-Postgres/blob/master/Mounting.md)
 
 ---
 
@@ -221,14 +221,14 @@ imrul@pc:/$ sudo systemctl stop postgresql-13
 
 ### Step 3: Configure in `postgresql.conf` [v13] or Create `recovery.conf` [v10]
 
-- Local Restoring
+- **Option 1:** Local Restoring
 
 ```conf
 restore_command = 'cp  /var/lib/pgsql/10/pgDataPITR/%f %p'
 recovery_target_time = '2021-07-27 14:00:00'
 ```
 
-- Slave Restoring
+- **Option 2:** Slave Restoring
 
 ```conf
 restore_command = 'cp  /var/mnt/archive_wal_dir/%f %p'
@@ -253,6 +253,18 @@ imrul@pc:/$ sudo systemctl start postgresql-13
 ```sql
 postgres=# SELECT pg_wal_replay_resume(); --Move to normal mode
 ```
+
+### Step 6: DB is Ready!!
+
+- `v13`
+
+> After completing the restoring process the recovery.signal will be vanished!
+
+- `v10`
+
+> After completing the restoring process the recovery.conf will be recovery.done
+
+---
 
 ---
 

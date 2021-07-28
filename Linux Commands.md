@@ -128,8 +128,11 @@
 ---
 
 
-### 
+### Delete all the contests of a folder
 
 ```shell
 rm -rf archive_wal_dir/*
 ```
+
+---
+
