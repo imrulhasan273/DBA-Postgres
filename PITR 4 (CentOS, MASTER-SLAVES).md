@@ -22,30 +22,30 @@
 
 ---
 
-## Configuration File
+## Initial Set Up 
 
 ```shell
-~:$ psql -U postgres -c 'SHOW config_file'	        # to view the postgres.conf file
-~:$ less /var/lib/pgsql/10/data/postgresql.conf    # to open the file using Command 
-~:$ more /var/lib/pgsql/10/data/postgresql.conf    # to open the file using Command 
+imrul@pc:/$ cp -R /home/imrul/scripts /var/lib/pgsql/13/scripts # Once in every fresh installation of PG
 ```
+
+---
 
 ## **Archiving**
 
-
-### Step 1: Open 'postgresql.conf' using cmd
+### Step 1: Open `postgresql.conf` using vi
 
 ```shell
 imrul@pc:/$ vi postgresql.conf  # Open the file using text editor to edit
 ```
+
 
 ### Step 2: Need to configure the archiving `postgresql.conf`
 
 - **Local archiving**
 
 ```text
-archive_mode = on
-archive_command = 'test ! -f  /var/lib/pgsql/10/pgDataPITR/%f && cp %p  /var/lib/pgsql/10/pgDataPITR/%f'
+archive_mode = o
+archive_command = 'test ! -f  /var/lib/pgsql/13/pgDataPITR/%f && cp %p  /var/lib/pgsql/13/pgDataPITR/%f'
 ```
 
 - **Slave archiving**
@@ -55,13 +55,13 @@ archive_mode = on
 archive_command = 'test ! -f  /var/mnt/archive_wal_dir/%f && cp %p  /var/mnt/archive_wal_dir/%f'
 ```
 
-> Pointed to Slaves `/mnt/archive_wal_dir` directory
-
+> Pointed to **Slaves** `/mnt/archive_wal_dir` directory
 
 ### Step 3: Restart the DB cluster
 
 ```shell
-imrul@pc:/$ sudo systemctl restart postgresql-10   # from root user
+imrul@pc:/$ sudo systemctl status postgresql-13    # from root user
+imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
 ```
 
 - [If Failed](https://dba.stackexchange.com/questions/196931/how-to-restart-postgresql-server-under-centos-7)
@@ -73,13 +73,13 @@ imrul@pc:/$ sudo systemctl restart postgresql-10   # from root user
 - Solution: [I experienced this issue when working....](https://stackoverflow.com/questions/31645550/postgresql-why-psql-cant-connect-to-server)
 
 ```shell
-imrul@pc:/$ sudo systemctl status postgresql-10
-imrul@pc:/$ sudo systemctl restart postgresql-10
+imrul@pc:/$ sudo systemctl status postgresql-13
+imrul@pc:/$ sudo systemctl restart postgresql-13
 imrul@pc:/$ pg_lsclusters
-imrul@pc:/$ sudo pg_ctlcluster 10 main start
-imrul@pc:/$ sudo nano /var/log/postgresql/postgresql-10-main.log
-imrul@pc:/$ sudo chmod -R 0700 /var/lib/pgsql/10/data
-imrul@pc:/$ sudo systemctl start postgresql
+imrul@pc:/$ sudo pg_ctlcluster 13 main start
+imrul@pc:/$ sudo nano /var/log/postgresql/postgresql-13-main.log
+imrul@pc:/$ sudo chmod -R 0700 /var/lib/pgsql/13/data
+imrul@pc:/$ sudo systemctl start postgresql-13
 ```
 
 ## **Major Task**
@@ -87,13 +87,21 @@ imrul@pc:/$ sudo systemctl start postgresql
 ### Step 1: Create table 1 :: data1
 
 ```sql
+postgres=# create schema pitr;
 postgres=# create table pitr.testPITR1 as select * from pg_class, pg_description;  ---DDL activity
 postgres=# select * from current_timestamp; --2021-07-27 03:32:31.618857-04
 ```
 
 ### Step 2: Take Base Backup
 
-- Copy the `data` folder to `bkp` folder as `data1`
+- Copy the `data` folder to `base_bkp` folder as `data1`
+
+- To take base backup
+
+```shell
+~$ bash /var/lib/pgsql/13/scripts/base.sh
+```
+
 
 ### Step 3: Create table 2 :: data2
 
@@ -105,6 +113,12 @@ postgres=# select * from current_timestamp;
 ### Step 4: Take Base Backup
 
 - Copy the `data` folder to `bkp` folder as `data2`
+
+- To take base backup
+
+```shell
+~$ bash /var/lib/pgsql/13/scripts/base.sh
+```
 
 ### Step 5: Create table 3 
 
@@ -127,19 +141,36 @@ postgres=# select * from current_timestamp;
 ### Step 1: Stop the server
 
 ```shell
-imrul@pc:/$ sudo systemctl stop postgresql-10
+imrul@pc:/$ sudo systemctl stop postgresql-13
 ```
 
 ### Step 2: Get back the `basebackup` folder
 
-- Need to rename `/var/lib/pgsql/10/data` to `/var/lib/pgsql/10/data_bkp"`
+- move `/var/lib/pgsql/13/data` to `/var/lib/pgsql/13/bkp/"` as `data_bkp1`
 
-- Need to take back copy of `data1` from the remote location
+- Need to take back copy of `data1` from the remote location `(/var/lib/pgsql/13/base_bkp/)`
 
 - rename `data1` to `data`
 
+- To view base backups
 
-### Step 3: Restore Configuration in `recovery.conf`
+```shell
+~$ bash /var/lib/pgsql/13/scripts/view.sh
+```
+
+- restore the `basebackup` you want
+
+```shell
+~$ bash /var/lib/pgsql/13/scripts/restore.sh    # Input your baseback name to restore 
+```
+
+- Permission to the data folder
+
+```shell
+~$ sudo chown -R postgres /var/lib/pgsql/13/data 
+```
+
+### Step 3: Configure in `postgresql.conf` [v13] or Create `recovery.conf` [v10]
 
 - Local Restoring
 
@@ -151,7 +182,7 @@ recovery_target_time = '2021-07-27 14:00:00'
 - Slave Restoring
 
 ```conf
-restore_command = 'cp   /var/mnt/archive_wal_dir/%f %p'
+restore_command = 'cp  /var/mnt/archive_wal_dir/%f %p'
 recovery_target_time = '2021-07-27 14:00:00'
 ```
 
@@ -160,26 +191,12 @@ recovery_target_time = '2021-07-27 14:00:00'
 
 - this `recovery.signal` is just an empty file which indicates that data should start recovering when db starts.
 
+- After completing the restoring process the `recovery.signal` will be vanished!
+
 ### Step 5: Restart the server
 
 ```shell
-imrul@pc:/$ sudo systemctl start postgresql-10
-```
-
-> If problem may arises related to `Folder Ownership`. Solution below
-
-```shell
-imrul@pc:/$ sudo systemctl status postgresql
-imrul@pc:/$ sudo systemctl start postgresql
-imrul@pc:/$ sudo systemctl restart postgresql
-imrul@pc:/$ pg_lsclusters
-imrul@pc:/$ sudo pg_ctlcluster 10 main start
-
-imrul@pc:/$ sudo chown -R postgres /var/lib/pgsql/10/data  # change owner of `main` folder to postgres
-
-imrul@pc:/$ sudo nano /var/log/postgresql/postgresql-10-main.log
-imrul@pc:/$ sudo chmod -R 0700  /var/lib/pgsql/10/data
-imrul@pc:/$ sudo systemctl start postgresql
+imrul@pc:/$ sudo systemctl start postgresql-13
 ```
 
 ### Step 6: Need to resume the DB from Recovering mode
@@ -204,4 +221,5 @@ drop 2 & 3:
 ```
 
 ---
+
 
