@@ -217,6 +217,26 @@ create database test;               -- OK
 
 ---
 
+### Check replication status
+
+---
+
+- On Master
+
+```sql
+select pg_current_wal_lsn();
+```
+
+- On Slave
+
+```sql
+select pg_last_wal_replay_lsn();
+```
+
+> Both values should match.
+
+---
+
 ## Check some configuration
 
 ---

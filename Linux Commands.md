@@ -136,6 +136,15 @@ rm -rf archive_wal_dir/*
 
 ---
 
+### Grep lines which doesn't starts with `#` or `;`
+
+---
+
+```shell
+grep "^[^#;]" smb.conf
+```
+
+---
 
 
 ```shell
