@@ -2,6 +2,14 @@
 
 ---
 
+### Each of the three permission triads (rwx in the example above) can be made up of the following characters:
+
+![](i/18.png)
+
+![](i/19.png)
+
+---
+
 ### Linux Version
 
 ```shell
