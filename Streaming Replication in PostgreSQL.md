@@ -1,4 +1,4 @@
-# **Streaming Replication (Ubuntu)**
+# **Streaming Replication (Linux)**
 
 ---
 
