@@ -10,6 +10,18 @@
 
 - [Video](https://www.youtube.com/watch?v=ThFvgdpFW8s)
 
+### Ubuntu
+
+```shell
+~: $ sudo apt install -y sshfs
+```
+
+### CentOS (HED Hat)
+
+```shell
+~: $ yum install fuse-sshfs 
+```
+
 ---
 
 ## General Syntax
