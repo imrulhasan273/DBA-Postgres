@@ -49,4 +49,22 @@ alter database postgres set default_transaction_read_only = off;
 
 
 
+---
+
+## Base Backup
+
+---
+
+wal_level = hot_standby
+max_wal_senders = 5
+
+```shell
+# from postgres user
+postgres@data $ pg_basebackup -h localhost -D /var/lib/postgresql/13/base_bkp/data$(date +_%y%m%d_%H%M)       # FOLDERS
+postgres@data $ pg_basebackup -h localhost -D /var/lib/postgresql/13/base_bkp/data$(date +_%y%m%d_%H%M).tar   # A tar file
+```
+
+```shell
+tar -D /var/lib/postgresql/13/base_bkp/base_bkp__210731_1751.tar -C /var/lib/postgresql/13/main/pg_wal
+```
 

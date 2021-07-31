@@ -145,12 +145,16 @@ postgres=# select * from current_timestamp; --2021-07-27 03:32:31.618857-04
 
 - Copy the `data` folder to `base_bkp` folder as `data1`
 
-- To take base backup
+-  **Option 1:** Take Base Backup using `custom scrip`
 
 ```shell
 ~$ bash /var/lib/pgsql/13/scripts/base.sh
 ```
+- **Option 2:** Take Base Backup using `pg_basebackup`
 
+```shell
+postgres@data $ pg_basebackup -h localhost -D /var/lib/pgsql/13/base_bkp/data$(date +_%y%m%d_%H%M)
+```
 
 ### Step 3: Create table 2 :: data2
 
@@ -163,10 +167,15 @@ postgres=# select * from current_timestamp;
 
 - Copy the `data` folder to `bkp` folder as `data2`
 
-- To take base backup
+-  **Option 1:** Take Base Backup using `custom scrip`
 
 ```shell
 ~$ bash /var/lib/pgsql/13/scripts/base.sh
+```
+- **Option 2:** Take Base Backup using `pg_basebackup`
+
+```shell
+postgres@data $ pg_basebackup -h localhost -D /var/lib/pgsql/13/base_bkp/data$(date +_%y%m%d_%H%M)
 ```
 
 ### Step 5: Create table 3 
