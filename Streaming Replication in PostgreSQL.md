@@ -154,7 +154,7 @@ rm -rf /var/lib/pgsql/13/data
 ---
 
 ```shell
-pg_basebackup -h 10.9.0.222 -D /var/lib/postgresql/13/data/ -U replicator -P -v -R -X stream -C -S slaveslot1
+pg_basebackup -h 10.9.0.222 -D /var/lib/pgsql/13/data/ -U replicator -P -v -R -X stream -C -S slaveslot1
 ```
 - Note: `right` ownership with `postgres`
 
