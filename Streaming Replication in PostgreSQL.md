@@ -275,6 +275,23 @@ select * from pg_stat_replication;
 
 ---
 
+## To do the Time Lag Server [Delay Replication]
+
+---
+
+### Step 1: configure the `postgresql.conf` file
+
+---
+
+```shell
+synchronous_commit = remote_apply
+recovery_min_apply_delay = 1800s
+```
+
+---
+
+---
+
 
 
 
