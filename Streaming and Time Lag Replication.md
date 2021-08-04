@@ -285,7 +285,7 @@ select * from pg_stat_replication;
 
 ```shell
 synchronous_commit = remote_apply
-recovery_min_apply_delay = 1800s
+recovery_min_apply_delay = 1800s    # here the time 1800s means data will synced in Slave after 1800 sec
 ```
 
 ---
