@@ -1,4 +1,4 @@
-# **PITR Final on (CentOS) Master-Slave(Time Lag) **
+# **PITR Final on (CentOS) Master-Slave(Time Lag)**
 
 ---
 
