@@ -23,7 +23,7 @@ postgres# create table pitr.PITR2 as select * from pg_class, pg_description; --2
 postgres# create table pitr.PITR3 as select * from pg_class, pg_description; --2317095	--
 ```
 
-- As of now `Database` is Synced between `**Master**` and `**Slave**` 
+- As of now `Database` is Synced between **Master** and **Slave**
 	- Because `Streaming Replication` in **Slave Server** without time delay.
 
 ## Slave Server Configuration to add `Delay Time`
