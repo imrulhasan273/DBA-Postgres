@@ -37,13 +37,13 @@
 - **Way:**
 
 ```shell
-pg_dump		# 	Dump / reload not required
+pg_dump             # Dump / reload not required
 ```
 
 ```shell
 Tooling	            # pg_dump			
 Task	            # Minor release update				
-Reloading data		# Not needed
+Reloading data      # Not needed
 Downtime needed     # Close to zero					
 ```
 
@@ -60,9 +60,9 @@ Downtime needed     # Close to zero
 - **Ways:**
 
 ```shell
-pg_dump			 # Dump / reload	 :: might take a lot of time     				  :: time increased with db size
-pg_upgrade		 # binary level	  	 :: cp data from old dir to new dir				  :: time increased with db size
-pg_upgrade –link # In-place upgrades :: new_data and old_data dir ==> same filesystem :: ->0 downtime, amount of data != limiting factor 
+pg_dump             # Dump / reload	 :: might take a lot of time     				  :: time increased with db size
+pg_upgrade          # binary level	  	 :: cp data from old dir to new dir				  :: time increased with db size
+pg_upgrade –link    # In-place upgrades :: new_data and old_data dir ==> same filesystem :: ->0 downtime, amount of data != limiting factor 
 ```
 
 - **Waly 1:**
