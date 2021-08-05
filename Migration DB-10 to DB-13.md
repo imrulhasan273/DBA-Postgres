@@ -6,13 +6,13 @@
 
 ---
 
-- [Link1](https://www.cybertec-postgresql.com/en/upgrading-and-updating-postgresql/)
-- [Link2](https://stackoverflow.com/questions/60409585/how-to-upgrade-postgresql-database-from-10-to-12-without-losing-data-for-openpro)
-- [Link3](https://www.enterprisedb.com/docs/epas/latest/epas_upgrade_guide/07_migration/)
-- [Link4](https://docs.bmc.com/docs/btco113/migrating-the-data-from-postgresql-9-x-to-10-x-800581922.html)
-- [Link5](https://www.postgresql.org/docs/13/pgupgrade.html)
-- [Link6](https://www.postgresql.org/docs/12/upgrading.html)
-- [Link7](https://www.percona.com/blog/2020/07/28/migrating-to-postgresql-version-13-incompatibilities-you-should-be-aware-of/)
+- [upgrading-and-updating-postgresql](https://www.cybertec-postgresql.com/en/upgrading-and-updating-postgresql/)
+- [how-to-upgrade-postgresql-database-from-10-to-12-without-losing-data-for-openpro](https://stackoverflow.com/questions/60409585/how-to-upgrade-postgresql-database-from-10-to-12-without-losing-data-for-openpro)
+- [epas_upgrade_guide_07_migration](https://www.enterprisedb.com/docs/epas/latest/epas_upgrade_guide/07_migration/)
+- [migrating-the-data-from-postgresql-9-x-to-10-x](https://docs.bmc.com/docs/btco113/migrating-the-data-from-postgresql-9-x-to-10-x-800581922.html)
+- [pgupgrade](https://www.postgresql.org/docs/13/pgupgrade.html)
+- [upgrading](https://www.postgresql.org/docs/12/upgrading.html)
+- [migrating-to-postgresql-version-13-incompatibilities-you-should-be-aware-of](https://www.percona.com/blog/2020/07/28/migrating-to-postgresql-version-13-incompatibilities-you-should-be-aware-of/)
 
 ---
 
