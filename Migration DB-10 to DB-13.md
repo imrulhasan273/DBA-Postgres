@@ -60,9 +60,9 @@ Downtime needed     # Close to zero
 - **Ways:**
 
 ```shell
-pg_dump             # Dump / reload	 :: might take a lot of time     				  :: time increased with db size
-pg_upgrade          # binary level	  	 :: cp data from old dir to new dir				  :: time increased with db size
-pg_upgrade –link    # In-place upgrades :: new_data and old_data dir ==> same filesystem :: ->0 downtime, amount of data != limiting factor 
+pg_dump             # Dump / reload	    :: might take a lot of time     				  :: time increased with db size
+pg_upgrade          # binary level	  	:: cp data from old dir to new dir				  :: time increased with db size
+pg_upgrade –link    # In-place upgrades :: new_data and old_data dir ==> same filesystem  :: ->0 downtime, amount of data != limiting factor 
 ```
 
 - **Waly 1:**
@@ -79,7 +79,7 @@ Downtime needed     # Downtime is needed
 ```shell
 Tooling	            # pg_upgrade –link			
 Task	            # Major release update			
-Reloading data		# Only hardlinks
+Reloading data      # Only hardlinks
 Downtime needed     # Close to zero			
 ```		
 
