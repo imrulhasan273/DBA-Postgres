@@ -107,7 +107,7 @@ Downtime needed     # Close to zero
 - [Install Postgres](https://www.postgresql.org/download/linux/redhat/) [Any version]
 
 ```shell
-pg_dump -h 192.168.168.50 -p 5432 -U imrul -F c -b -v -n "training" -f postgres.backup postgres
+/usr/pgsql-10/pg_dump -h 192.168.168.50 -p 5432 -U imrul -F c -b -v -n "training" -f postgres.backup postgres
 ```
 
 ---
