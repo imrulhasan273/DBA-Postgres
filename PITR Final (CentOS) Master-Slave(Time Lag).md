@@ -32,7 +32,7 @@ postgres# create table pitr.PITR3 as select * from pg_class, pg_description; --2
 
 ```shell
 synchronous_commit = remote_apply
-recovery_min_apply_delay = 7200s		# 2 Hours Delay
+recovery_min_apply_delay = 7200s		# '60s' or '12h' or '1min' or '1d'
 ```
 
 - Restart Required
@@ -94,6 +94,9 @@ root $ mv standby.signal standby.signal.bkp
 ```shell
 restore_command = 'cp  /mnt/archive_wal_dir/%f %p'
 recovery_target_time = '2021-08-03 14:49:23.923197+06'
+# BELOW 2 OPTIONAL::ALREADY SET BY DEFAULT
+recovery_target_action = 'pause'	# 'promote'			|		'pause'::select pg_wal_replay_resume();
+recovery_target_inclusive = 'false'
 ```
 
 ### Create the `Recovery Mode` indicator file
@@ -115,7 +118,7 @@ root $ sudo systemctl start postgresql-13
 - `psql`
 
 ```sql
-postgres# SELECT pg_wal_replay_resume(); 
+postgres# SELECT pg_wal_replay_resume(); 	--If recovery_target_action == 'pause'
 ```
 
 ---
