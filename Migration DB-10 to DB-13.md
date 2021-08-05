@@ -104,6 +104,8 @@ Downtime needed     # Close to zero
 
 ### Step 1::Do Some DDL/DML ::  [`postgres-10`]
 
+- [Install Postgres](https://www.postgresql.org/download/linux/redhat/) [Any version]
+
 ```sql
 postgres=# \c postgres
 postgres=# create schema migration;
