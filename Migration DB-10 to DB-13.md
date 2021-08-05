@@ -8,6 +8,7 @@
 
 - [upgrading-and-updating-postgresql](https://www.cybertec-postgresql.com/en/upgrading-and-updating-postgresql/)
 - [how-to-upgrade-from-postgresql-11-to-12/](https://www.postgresql.r2schools.com/how-to-upgrade-from-postgresql-11-to-12/)
+- [how-to-upgrade-from-postgresql-11-to-12/VIDEO](https://www.youtube.com/watch?v=u1sTwvCKmIU)
 - [how-to-upgrade-postgresql-database-from-10-to-12-without-losing-data-for-openpro](https://stackoverflow.com/questions/60409585/how-to-upgrade-postgresql-database-from-10-to-12-without-losing-data-for-openpro)
 - [epas_upgrade_guide_07_migration](https://www.enterprisedb.com/docs/epas/latest/epas_upgrade_guide/07_migration/)
 - [migrating-the-data-from-postgresql-9-x-to-10-x](https://docs.bmc.com/docs/btco113/migrating-the-data-from-postgresql-9-x-to-10-x-800581922.html)
@@ -104,6 +105,11 @@ Downtime needed     # Close to zero
 ### Step 1::Do Some DDL/DML ::  [`postgres-10`]
 
 ```sql
+postgres=# \c postgres
+postgres=# create schema migration;
+```
+
+```sql
 postgres=# create table migration.migration1 as select * from pg_class, pg_description ;    --create first table
 postgres=# create table migration.migration2 as select * from pg_class, pg_description ;    --create second table
 
@@ -122,7 +128,7 @@ postgres=# CREATE INDEX idx_b_a ON migration.migration4 (migration.migration3);
 ```
 
 ```SQL
-postgres=# SELECT pg_size_pretty(pg_database_size('migration'));
+postgres=# SELECT pg_size_pretty(pg_database_size('postgres'));
 ```
 
 - Stop the `postgresql-10` [Older Version]
@@ -139,30 +145,26 @@ postgres=# SELECT pg_size_pretty(pg_database_size('migration'));
 ---
 
 
-1. **init DB**
+1. **Start the DB** [`v13`]
 
 ```shell
-# ~$ initdb -D /data/db13
 ~$ sudo systemctl start postgresql-13.service
 ~$ sudo systemctl status postgresql-13.service
 ```
 
 2. **pg_upgrade**
 
-- **go to `pg-13` bin directory**
+- **Go to `pg-v13` bin directory**
 
 ```shell
 ~$ cd /usr/pgsql-13/bin/
 ls
 ```
 
-- **Open the `upgrading tool` using the following command**
+- **Upgrade using the following command**
 
 ```shell
 ~$ /usr/pgsql-13/bin/pg_upgrade \
-```
-
-```shell
 > -b /usr/pgsql-10/bin \        # OLD Binary
 > -B /usr/pgsql-13/bin \        # NEW Binary
 > -d /var/lib/pgsql/10/data \   # OLD Data Directory
@@ -228,12 +230,11 @@ port = 5433     # Uncomment the line
 
 ---
 
-### Step 5: `psql`
+### Step 5: `psql` in `v13`
 
 ---
 
-- Check the DB data
-
+- Check the DB data in `postgres-v13`
 
 ---
 
@@ -251,7 +252,7 @@ port = 5433     # Uncomment the line
 - Run the `analyze_new_cluster` file
 
 ```shell
-~$ bash analyze_new_cluster.sh
+postgres ~$ bash analyze_new_cluster.sh
 ```
 
 - Exit 
@@ -263,31 +264,33 @@ port = 5433     # Uncomment the line
 - Installed package
 
 ```shell
-~$ yum list --installed | grep postgresql
+~$ yum list --installed | grep postgresql   # Command not found???
 ```
 
-- Now remove all the packages of old version that is `v10`
+- Now remove all the packages of old version that is `postgres-v10`
 
 ```shell
-~$ sudo yum remove postgresql10*
+~$ sudo yum remove postgresql10*            # All the files related to postgres10 will be removed
 ```
 
 - Now Installed package
 
 ```shell
-~$ yum list --installed | grep postgresql
+~$ yum list --installed | grep postgresql   
 ```
+
 
 - remove data dir of `pg-10`
 
 ```shell
+~$ cd /var/lib/pgsql/
 ~$ rm -rf 10        # Inside pgsql directory
 ```
 
 - Run the `delete_old_cluster` file
 
 ```shell
-~$ bash delete_old_cluster.sh
+postgres~$ bash delete_old_cluster.sh
 ```
 
 ---
@@ -298,10 +301,14 @@ port = 5433     # Uncomment the line
 
 ---
 
+- Go to `psql` prompt to query
+
 ```shell
-postgres $ psql         # Command not found
+postgres $ psql         # If Command not found ==> [Step 8]
 postgres $ exit
 ```
+
+### Step 8: Configure `postgresqlprofile`
 
 - Go to `/etc/profile.d/`
 
