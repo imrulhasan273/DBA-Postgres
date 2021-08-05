@@ -115,18 +115,17 @@ postgres=# create schema migration;
 postgres=# create table migration.migration1 as select * from pg_class, pg_description ;    --create first table
 postgres=# create table migration.migration2 as select * from pg_class, pg_description ;    --create second table
 
-postgres=# CREATE INDEX idx_a_a ON migration.migration1 (migration.migration1);
-postgres=# CREATE INDEX idx_a_b ON migration.migration1 (migration.migration2);
-postgres=# CREATE INDEX idx_b_a ON migration.migration2 (migration.migration1);
+postgres=# CREATE INDEX idx_migration1_objoid ON migration.migration1 (objoid);
+postgres=# CREATE INDEX idx_migration2_objoid ON migration.migration2 (objoid);
 ```
 
 ```sql
 postgres=# CREATE TABLE migration.migration3 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
 postgres=# CREATE TABLE migration.migration4 AS SELECT * FROM migration.migration3;
 
-postgres=# CREATE INDEX idx_a_a ON migration.migration3 (migration.migration3);
-postgres=# CREATE INDEX idx_a_b ON migration.migration3 (migration.migration4);
-postgres=# CREATE INDEX idx_b_a ON migration.migration4 (migration.migration3);
+postgres=# CREATE INDEX idx_migration3_a ON migration.migration3 (a);
+postgres=# CREATE INDEX idx_migration3_b ON migration.migration3 (b);
+postgres=# CREATE INDEX idx_migration4_a ON migration.migration4 (a);
 ```
 
 ```SQL
