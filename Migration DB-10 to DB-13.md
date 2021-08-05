@@ -70,7 +70,7 @@ pg_upgrade –link    # In-place upgrades :: new_data and old_data dir ==> same 
 ```shell
 Tooling	            # pg_upgrade			
 Task	            # Major release update			
-Reloading data		# Copy is needed
+Reloading data      # Copy is needed
 Downtime needed     # Downtime is needed			
 ```		
 
