@@ -200,6 +200,7 @@ ls
 - **To reduce downtime, we can clean out the directory, run initdb again and add the –link option:**
 
 ```shell
+~$ /usr/pgsql-13/bin/pg_upgrade \
 > -b /usr/pgsql-10/bin \        # OLD Binary
 > -B /usr/pgsql-13/bin \        # NEW Binary
 > -d /var/lib/pgsql/10/data \   # OLD Data Directory
