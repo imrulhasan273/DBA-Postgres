@@ -144,88 +144,6 @@ postgres=# CREATE INDEX idx_migration5_b ON migration.migration5 (b);
 postgres=# CREATE INDEX idx_migration6_a ON migration.migration6 (a);
 ```
 
-```sql
-postgres=# CREATE TABLE migration.migration7 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration8 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration7_a ON migration.migration7 (a);
-postgres=# CREATE INDEX idx_migration7_b ON migration.migration7 (b);
-postgres=# CREATE INDEX idx_migration8_a ON migration.migration8 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration9 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration10 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration9_a ON migration.migration9 (a);
-postgres=# CREATE INDEX idx_migration9_b ON migration.migration9 (b);
-postgres=# CREATE INDEX idx_migration10_a ON migration.migration10 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration11 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration12 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration11_a ON migration.migration11 (a);
-postgres=# CREATE INDEX idx_migration11_b ON migration.migration11 (b);
-postgres=# CREATE INDEX idx_migration12_a ON migration.migration12 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration13 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration14 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration13_a ON migration.migration13 (a);
-postgres=# CREATE INDEX idx_migration13_b ON migration.migration13 (b);
-postgres=# CREATE INDEX idx_migration14_a ON migration.migration14 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration15 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration16 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration15_a ON migration.migration15 (a);
-postgres=# CREATE INDEX idx_migration15_b ON migration.migration15 (b);
-postgres=# CREATE INDEX idx_migration16_a ON migration.migration16 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration17 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration18 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration17_a ON migration.migration17 (a);
-postgres=# CREATE INDEX idx_migration17_b ON migration.migration17 (b);
-postgres=# CREATE INDEX idx_migration18_a ON migration.migration18 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration19 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration20 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration19_a ON migration.migration19 (a);
-postgres=# CREATE INDEX idx_migration19_b ON migration.migration19 (b);
-postgres=# CREATE INDEX idx_migration20_a ON migration.migration20 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration21 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration22 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration21_a ON migration.migration21 (a);
-postgres=# CREATE INDEX idx_migration21_b ON migration.migration21 (b);
-postgres=# CREATE INDEX idx_migration22_a ON migration.migration22 (a);
-```
-
-```sql
-postgres=# CREATE TABLE migration.migration21 AS SELECT id AS a, id AS b, id AS c FROM generate_series(1, 50000000) AS id;
-postgres=# CREATE TABLE migration.migration22 AS SELECT * FROM migration.migration3;
-
-postgres=# CREATE INDEX idx_migration21_a ON migration.migration21 (a);
-postgres=# CREATE INDEX idx_migration21_b ON migration.migration21 (b);
-postgres=# CREATE INDEX idx_migration22_a ON migration.migration22 (a);
-```
-
-
 ```SQL
 postgres=# SELECT pg_size_pretty(pg_database_size('postgres'));
 ```
@@ -260,7 +178,7 @@ postgres=# SELECT pg_size_pretty(pg_database_size('postgres'));
 ls
 ```
 
-- **Upgrade using the following command**
+- **Upgrade using the following command**   [DB Server May need to stop]
 
 ```shell
 ~$ /usr/pgsql-13/bin/pg_upgrade \
