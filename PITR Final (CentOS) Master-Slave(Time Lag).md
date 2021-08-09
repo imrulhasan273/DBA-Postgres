@@ -81,6 +81,13 @@ root $ sudo systemctl stop postgresql-13	# Stop the server to work
 root $ mv standby.signal standby.signal.bkp
 ```
 
+### Comment two commands of delay repication 
+
+```conf
+#synchronous_commit = remote_apply
+#recovery_min_apply_delay = 1800s
+```
+
 ---
 
 ## PITR
@@ -122,6 +129,7 @@ postgres# SELECT pg_wal_replay_resume(); 	--If recovery_target_action == 'pause'
 ```
 
 ---
+
 
 
 
