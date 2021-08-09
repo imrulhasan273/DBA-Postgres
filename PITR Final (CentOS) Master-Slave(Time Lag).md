@@ -81,7 +81,7 @@ root $ sudo systemctl stop postgresql-13	# Stop the server to work
 root $ mv standby.signal standby.signal.bkp
 ```
 
-### Comment two commands of delay repication 
+### Comment two commands of delay replication 
 
 ```conf
 #synchronous_commit = remote_apply
