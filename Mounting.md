@@ -19,7 +19,8 @@
 ### CentOS (HED Hat)
 
 ```shell
-~: $ yum install fuse-sshfs 
+~: $ yum -y install epel-release
+~: $ yum install -y fuse-sshfs
 ```
 
 ---
