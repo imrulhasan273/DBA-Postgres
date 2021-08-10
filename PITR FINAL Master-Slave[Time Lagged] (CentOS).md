@@ -2,6 +2,28 @@
 
 ---
 
+# **Index**
+
+---
+
+1. Introduction [Query](#Query-1)
+2. Chapter-01: Postgres-13 Installation [Query](#Query-2)
+3. Chapter-02: Archive Folder Mounting [Query](#Query-3)
+4. Chapter-03: Archiving in Master [Query](#Query-4)
+5. Chapter-04: Streaming Replication [Query](#Query-5)
+6. Chapter-05: Delay Replication [Query](#Query-6)
+7. Chapter-06:  Incident made in Master DB [Query](#Query-7)
+8. Chapter-07: PITR on Slave Server [Query](#Query-8)
+9. Chapter-08: Cautions [Query](#Query-9)
+
+---
+
+---
+
+[Index](#Index)
+
+## **Query-1**
+
 # **Introduction**
 
 ---
@@ -44,6 +66,10 @@
 ---
 
 ---
+
+[Index](#Index)
+
+## **Query-2**
 
 # **Chapter-01: Postgres-13 Installation**
 
@@ -90,6 +116,10 @@ systemctl start postgresql.service
 ---
 
 ---
+
+[Index](#Index)
+
+## **Query-3**
 
 # **Chapter-02: Archive Folder Mounting**
 
@@ -143,6 +173,10 @@ imrul@slave:~$ sshfs user@[ip]:/var/mnt/archive_wal_dir /mnt/archive_wal_dir
 
 ---
 
+[Index](#Index)
+
+## **Query-4**
+
 # **Chapter-03: Archiving in Master**
 
 ---
@@ -171,6 +205,10 @@ imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
 ```
 
 ---
+
+[Index](#Index)
+
+## **Query-5**
 
 # **Chapter-04: Streaming Replication**
 
@@ -450,6 +488,10 @@ select * from pg_stat_replication;
 
 ---
 
+[Index](#Index)
+
+## **Query-6**
+
 # **Chapter-05: Delay Replication**
 
 ---
@@ -469,6 +511,10 @@ recovery_min_apply_delay = 3d	# '60s' or '12h' or '1min' or '1d'
 
 ---
 
+[Index](#Index)
+
+## **Query-7**
+
 # **Chapter-06:  Incident made in Master DB**
 
 ---
@@ -487,6 +533,10 @@ postgres# drop table pitr.PITR2;  -- MISTAKE
 
 
 ---
+
+[Index](#Index)
+
+## **Query-8**
 
 # **Chapter-07: PITR on Slave Server**
 
@@ -560,6 +610,10 @@ postgres@data $ pg_basebackup -h <ip> -D /var/lib/pgsql/13/base_bkp/data$(date +
 - Basebackup will be stored in `/var/lib/pgsql/13/base_bkp/` location with name as `data_yyyy_mm_dd_hh_mm`
 
 ---
+
+[Index](#Index)
+
+## **Query-9**
 
 # **Chapter-08: Cautions**
 
