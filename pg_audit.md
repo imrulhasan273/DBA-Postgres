@@ -2,7 +2,9 @@
 
 ---
 
-- https://severalnines.com/database-blog/how-to-audit-postgresql-database
+- [Ref1](https://severalnines.com/database-blog/how-to-audit-postgresql-database)
+
+---
 
 ### Install pg audit
 
@@ -10,8 +12,9 @@
 yum install pgaudit14_12
 ```
 
+---
 
-### add it in the postgresql.conf configuration file
+### Add it in the postgresql.conf configuration file
 
 ```shell
 vi /var/lib/pgsql/13/data/postgresql.conf
@@ -21,11 +24,15 @@ vi /var/lib/pgsql/13/data/postgresql.conf
 shared_preload_libraries = 'pgaudit, pg_stat_statements'
 ```
 
+---
+
 ### Restart DB
 
 ```shell
 sudo systemctl restart postgresql-13
 ```
+
+---
 
 ### create the extension:
 
@@ -37,14 +44,15 @@ CREATE EXTENSION pgaudit;
 SELECT * FROM pg_available_extensions WHERE name LIKE '%audit%';
 ```
 
+---
 
 ### pgAudit Configuration
-
 
 ```sql
 postgres=# SELECT name,setting FROM pg_settings WHERE name LIKE 'pgaudit%';
 ```
 
+---
 
 ### To audit all the reads, writes, and DDL queries, run:
 
@@ -52,6 +60,8 @@ postgres=# SELECT name,setting FROM pg_settings WHERE name LIKE 'pgaudit%';
 test1=# set pgaudit.log = 'read,write,ddl';
 SET
 ```
+
+---
 
 ### And then, run the following sentences:
 
@@ -63,6 +73,8 @@ test1=# INSERT INTO table1 (id, name) values (3, 'name3');
 test1=# SELECT * FROM table1;
 ```
 
+---
+
 ### If you check the PostgreSQL log file, you will see this:
 
 ```sql
@@ -72,6 +84,8 @@ test1=# SELECT * FROM table1;
 2020-11-20 19:18:58.103 UTC [25142] LOG:  AUDIT: SESSION,6,1,WRITE,INSERT,,,"INSERT INTO table1 (id, name) values (3, 'name3');",<not logged>
 2020-11-20 19:19:07.261 UTC [25142] LOG:  AUDIT: SESSION,7,1,READ,SELECT,,,SELECT * FROM table1;,<not logged>
 ```
+
+---
 
 ### Enabling pgAudit with ClusterControl
 
@@ -87,5 +101,4 @@ s9s job --list
 s9s job --log --job-id=163
 ```
 
-
-
+---
