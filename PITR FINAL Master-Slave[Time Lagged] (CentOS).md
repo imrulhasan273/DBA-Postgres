@@ -95,20 +95,20 @@ systemctl start postgresql.service
 
 ---
 
-## Step 1: Installation (`Slave`)
+### Step 1: Installation (`Slave`)
 
 ```shell
 ~: $ yum -y install epel-release
 ~: $ yum install -y fuse-sshfs
 ```
 
-## Step 2: cd to `/var/mnt` directory (`Master`)
+### Step 2: cd to `/var/mnt` directory (`Master`)
 
 ```shell
 imrul@master :~$ cd /var/mnt
 ```
 
-## Step 3: Create a directory in this location (`Master`)
+### Step 3: Create a directory in this location (`Master`)
 
 ```shell
 imrul@master :~$ sudo mkdir archive_wal_dir        
@@ -117,20 +117,20 @@ imrul@master :~$ sudo chmod a+rwx archive_wal_dir
 # This folder needs permission 
 ```
 
-## Step 4: cd to `/mnt` directory (Slave)
+### Step 4: cd to `/mnt` directory (Slave)
 
 ```shell
 imrul@slave :~$ cd /mnt
 ```
 
-## Step 5: Create a directory in this location (`Slave`)
+### Step 5: Create a directory in this location (`Slave`)
 
 ```shell
 imrul@slave :~$ sudo mkdir archive_wal_dir          
 # This is mountpoint. All the data of Master are shared on this Slave
 ```
 
-## Step 6: SSHFS from slave (`Slave`)
+### Step 6: SSHFS from slave (`Slave`)
 
 ```shell
 imrul@slave:~$ sshfs user@[ip]:/var/mnt/archive_wal_dir /mnt/archive_wal_dir
@@ -147,13 +147,13 @@ imrul@slave:~$ sshfs user@[ip]:/var/mnt/archive_wal_dir /mnt/archive_wal_dir
 
 ---
 
-## Step 1: Open `postgresql.conf` using vi (`Master`)
+### Step 1: Open `postgresql.conf` using vi (`Master`)
 
 ```shell
 imrul@pc:/$ vi /var/lib/pgsql/13/data/postgresql.conf  # Open the file using text editor to edit
 ```
 
-## Step 2: Configure archiving in `postgresql.conf` (`Master`)
+### Step 2: Configure archiving in `postgresql.conf` (`Master`)
 
 ```conf
 archive_mode = on
@@ -163,7 +163,7 @@ archive_command = 'test ! -f  /var/mnt/archive_wal_dir/%f && cp %p  /var/mnt/arc
 > Pointed to /mnt/archive_wal_dir directory of Slave Server
 
 
-## Step 3: Restart the DB cluster (`Master`)
+### Step 3: Restart the DB cluster (`Master`)
 
 ```shell
 imrul@pc:/$ sudo systemctl status postgresql-13    # from root user
