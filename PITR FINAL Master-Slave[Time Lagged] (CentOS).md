@@ -108,6 +108,28 @@ imrul@slave:~$ sshfs user@[ip]:/var/mnt/archive_wal_dir /mnt/archive_wal_dir
 
 ---
 
+## Step 1: Open postgresql.conf using vi (Master)
+
+```shell
+imrul@pc:/$ vi postgresql.conf  # Open the file using text editor to edit
+```
+
+## Step 2: Configure archiving in postgresql.conf (Master)
+
+```conf
+archive_mode = on
+archive_command = 'test ! -f  /var/mnt/archive_wal_dir/%f && cp %p  /var/mnt/archive_wal_dir/%f'
+```
+
+> Pointed to /mnt/archive_wal_dir directory of Slave Server
+
+
+## Step 3: Restart the DB cluster (Master)
+
+```shell
+imrul@pc:/$ sudo systemctl status postgresql-13    # from root user
+imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
+```
 
 ---
 
