@@ -97,12 +97,10 @@ imrul@slave :~$ sudo mkdir archive_wal_dir
 imrul@slave:~$ sshfs user@[ip]:/var/mnt/archive_wal_dir /mnt/archive_wal_dir
 ```
 
-```shell
-ip 							⇒  master ip address
-user						⇒ user_name of server
-/var/mnt/archive_wal_dir 	⇒ Source Location of Archive Folder
-/mnt/archive_wal_dir		⇒ Destination Location of Archive Folder
-```
+- ip	⇒  master ip address
+- user	⇒ user_name of server
+- `/var/mnt/archive_wal_dir` 	⇒ Source Location of Archive Folder
+- `/mnt/archive_wal_dir`		⇒ Destination Location of Archive Folder
 
 ---
 
