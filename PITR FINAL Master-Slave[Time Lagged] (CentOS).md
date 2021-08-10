@@ -79,6 +79,8 @@
 
 ---
 
+- [Installation Guide](https://www.postgresql.org/download/linux/redhat/)
+
 ### Step 1: Install the repository RPM:
 
 ```shell
