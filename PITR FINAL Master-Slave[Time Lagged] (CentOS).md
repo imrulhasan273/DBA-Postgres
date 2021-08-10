@@ -492,39 +492,39 @@ postgres# drop table pitr.PITR2;  -- MISTAKE
 
 ---
 
-### Step 1: Stop the slave server (Slave)
+### Step 1: Stop the slave server (`Slave`)
 
 ```shell
 root $ sudo systemctl stop postgresql-13
 ```
 
-### Step 2: Give full permission to archive_wal_dir (master)
+### Step 2: Give full permission to `archive_wal_dir` (`master`)
 
 ```shell
 root $ cd /var/mnt/archive_wal_dir
 root $ chmod 777 *
 ```
 
-### Step 3: Rename the standby mode indicator file standby.signal (slave)
+### Step 3: Rename the standby mode indicator file `standby.signal` (`slave`)
 
 ```shell
 root $ mv standby.signal standby.signal.bkp
 ```
 
-### Step 4: Create the recovery mode indicator file recovery.signal (slave)
+### Step 4: Create the recovery mode indicator file `recovery.signal` (`slave`)
 
 ```shell
 root $ touch recovery.signal
 ```
 
-### Step 5: Comment two commands of delay replication (slave)
+### Step 5: Comment out of below two lines of delay replication (`slave`)
 
 ```conf
 #synchronous_commit = remote_apply
 #recovery_min_apply_delay = 1800s # '60s' or '12h' or '1min' or '1d'
 ```
 
-### Step 6: Configure slave to restore wal files (slave)
+### Step 6: Configure slave to restore `wal` files (`slave`)
 
 ```conf
 restore_command = 'cp  /mnt/archive_wal_dir/%f %p'
@@ -533,25 +533,25 @@ recovery_target_time = '2021-08-03 14:49:23.923197+06' # PITR TIME
 
 - This file Will be vanished after completing the recovery
 
-### Step 7: Start the Server again (slave)
+### Step 7: Start the Server again (`slave`)
 
 ```shell
 root $ sudo systemctl start postgresql-13
 ```
 
-### Step 8: Need to Resume the DB from Recovering mode (slave)
+### Step 8: Need to Resume the DB from Recovering mode (`slave`)
 
 ```sql
-postgres# SELECT pg_wal_replay_resume(); 
+postgres=# SELECT pg_wal_replay_resume(); 
 ```
 
 ### Step 9: After completing the PITR process				
 
-- Recovery.signal file will be vanished
+- `Recovery.signal` file will be vanished
 
 > **Data Recovered**
 
-### Step 10: Take basebackup(Slave) to restore in Master		
+### Step 10: Take basebackup(`Slave`) to restore in `Master`		
 
 ```sql
 postgres@data $ pg_basebackup -h <ip> -D /var/lib/pgsql/13/base_bkp/data$(date +_%y%m%d_%H%M)
