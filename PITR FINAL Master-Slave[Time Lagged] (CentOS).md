@@ -176,6 +176,277 @@ imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
 
 ---
 
+- https://www.postgresql.r2schools.com/how-to-setup-streaming-replication-in-postgresql-step-by-step-on-ubuntu/
+
+- https://www.youtube.com/watch?v=LhPAg583pKc
+
+---
+
+## Host Name
+
+---
+
+### Master
+
+```shell
+hostname   
+```
+
+![](i/9.png)
+
+
+### Slave
+
+```shell
+hostname   
+```
+
+![](i/10.png)
+
+---
+
+
+## IP Address
+
+
+---
+
+
+### Master
+
+```shell
+ip addr
+```
+
+![](i/12.png)
+
+
+### Slave
+
+```shell
+ip addr
+```
+
+![](i/11.png)
+
+
+---
+
+## Configure the Master Server
+
+---
+
+- before modifying the file best practice to store back up.
+
+### Step 1: Configure `postgresql.conf`
+
+---
+
+```shell
+vi /var/lib/pgsql/13/data/postgresql.conf  # Open in VI editor
+```
+
+- Search for `listen_addresses` using `:/listen_`
+
+```conf
+listen_addresses = '*'
+```
+
+> Replace localost with `*`
+
+> `*` means connections from all the clients.
+
+- Save the file and Exit.
+
+---
+
+### Step 2: Create `replication` user
+
+---
+
+> Now we have to create replication user on master server.
+
+```sql
+postgres=# CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'replicator' ;
+```
+
+---
+
+### Step 3: Add Standby Server
+
+---
+
+```shell
+vi /var/lib/pgsql/13/data/pg_hba.conf
+```
+
+![](i/13.png)
+
+> Added the last line.
+
+---
+
+### Step 4: Restart the DB cluster
+
+```shell
+sudo systemctl restart postgresql-13
+sudo systemctl status postgresql-13
+```
+
+---
+
+## Configure the Slave Server
+
+---
+
+### Step 1: Stop the Slave Server
+
+```shell
+sudo systemctl status postgresql-13
+sudo systemctl stop postgresql-13
+```
+
+---
+
+### Step 2: Take backup of data folder
+
+---
+
+- Switch to `postgres` user
+
+```shell
+postgres~$ cp -R /var/lib/pgsql/13/data/ /var/lib/pgsql/13/data_old/
+postgres~$ rm -rf /var/lib/pgsql/13/data
+```
+
+---
+
+### Step 3: Take Basebackup of Master Server in Slave Server
+
+---
+
+```shell
+pg_basebackup -h 10.9.0.222 -D /var/lib/pgsql/13/data/ -U replicator -P -v -R -X stream -C -S slaveslot
+```
+
+- Note: `right` ownership with `postgres`
+
+```shell
+sudo chown -R postgres /var/lib/pgsql/13/data   # This ownership need to be set in Master Server
+```
+
+> Then provide the password for user `replicator` created in master server.
+
+---
+
+### Step 4: Observe the data directory
+
+---
+
+```shell
+cd /var/lib/postgresql/13/data/
+ls
+ls -ltrh /var/lib/pgsql/13/data
+```
+
+> `standby.signal` file is here indicating standby mode of this server.
+
+---
+
+### Step 5: Check the DB cluster
+
+---
+
+```shell
+sudo systemctl status postgresql-13
+sudo systemctl start postgresql-13
+```
+
+---
+
+## Testing
+
+---
+
+### Some query on Slave Server
+
+---
+
+```sql
+select datname from pg_database;    -- OK
+select pitr.*;                      -- OK
+create database test;               -- Can't Execute in a read only transaction (Standby Server)
+```
+
+---
+
+### Some query on Master Server
+
+---
+
+```sql
+select datname from pg_database;    -- OK
+select pitr.*;                      -- OK
+create database test;               -- OK
+```
+
+---
+
+### Check replication status
+
+---
+
+- On Master
+
+```sql
+select pg_current_wal_lsn();
+```
+
+- On Slave
+
+```sql
+select pg_last_wal_replay_lsn();
+```
+
+> Both values should match.
+
+---
+
+### Check some configuration
+
+---
+
+- `Master Server`
+
+```sql
+select * from pg_replication_slots;
+```
+
+> ![](i/14.png)
+
+---
+
+- `Slave Server`
+
+```sql
+select * from pg_stat_wal_receiver;
+```
+
+- ![](i/15.png)
+
+- `Master Server`
+
+```sql
+select * from pg_stat_replication;
+```
+
+- ![](i/16.png)
+
+- Slaves `/var/lib/pgsql/13/data/`
+
+> ![](i/17.png)
+
+---
 
 ---
 
@@ -183,12 +454,36 @@ imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
 
 ---
 
+### Step 1: Configure the `postgresql.conf` file
+
+---
+
+```shell
+synchronous_commit = remote_apply
+recovery_min_apply_delay = 3d	# '60s' or '12h' or '1min' or '1d'
+```
+
+> Here `recovery_min_apply_delay=3d` means standby server is lagged behined the master server by 3 days.
+
+---
 
 ---
 
 # **Chapter-06:  Incident made in Master DB**
 
 ---
+
+### Step 1: Some Query on MASTER [Query]
+
+---
+
+```sql
+postgres# create table pitr.PITR4 as select * from pg_class, pg_description;  
+postgres# insert into pitr.PITR3 select * from pg_class, pg_description;     -- NOTE TIME TO PITR
+postgres# drop table pitr.PITR2;  -- MISTAKE
+```
+
+> Note:  Although data is lost in Master, we can get data back through PITR using Slave Server as Slave server is lagged behind the master server by a duration configured in Slaved server.
 
 
 ---
@@ -197,6 +492,72 @@ imrul@pc:/$ sudo systemctl restart postgresql-13   # from root user
 
 ---
 
+### Step 1: Stop the slave server (Slave)
+
+```shell
+root $ sudo systemctl stop postgresql-13
+```
+
+### Step 2: Give full permission to archive_wal_dir (master)
+
+```shell
+root $ cd /var/mnt/archive_wal_dir
+root $ chmod 777 *
+```
+
+### Step 3: Rename the standby mode indicator file standby.signal (slave)
+
+```shell
+root $ mv standby.signal standby.signal.bkp
+```
+
+### Step 4: Create the recovery mode indicator file recovery.signal (slave)
+
+```shell
+root $ touch recovery.signal
+```
+
+### Step 5: Comment two commands of delay replication (slave)
+
+```conf
+#synchronous_commit = remote_apply
+#recovery_min_apply_delay = 1800s # '60s' or '12h' or '1min' or '1d'
+```
+
+### Step 6: Configure slave to restore wal files (slave)
+
+```conf
+restore_command = 'cp  /mnt/archive_wal_dir/%f %p'
+recovery_target_time = '2021-08-03 14:49:23.923197+06' # PITR TIME
+```
+
+- This file Will be vanished after completing the recovery
+
+### Step 7: Start the Server again (slave)
+
+```shell
+root $ sudo systemctl start postgresql-13
+```
+
+### Step 8: Need to Resume the DB from Recovering mode (slave)
+
+```sql
+postgres# SELECT pg_wal_replay_resume(); 
+```
+
+### Step 9: After completing the PITR process				
+
+- Recovery.signal file will be vanished
+
+> **Data Recovered**
+
+### Step 10: Take basebackup(Slave) to restore in Master		
+
+```sql
+postgres@data $ pg_basebackup -h <ip> -D /var/lib/pgsql/13/base_bkp/data$(date +_%y%m%d_%H%M)
+```
+
+- Basebackup will be stored in `/var/lib/pgsql/13/base_bkp/` location with name as `data_yyyy_mm_dd_hh_mm`
 
 ---
 
