@@ -49,6 +49,45 @@
 
 ---
 
+## Installation
+
+---
+
+### Step 1: Install the repository RPM:
+
+```shell
+sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+```
+
+---
+
+### Step 2: Install PostgreSQL
+
+```shell
+sudo yum install -y postgresql13-server
+```
+
+---
+
+### Step 3: Optionally initialize the database and enable automatic start:
+
+```shell
+sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
+sudo systemctl enable postgresql-13
+sudo systemctl start postgresql-13
+```
+
+---
+
+### Step 4: Post Installation
+
+```shell
+postgresql-setup --initdb
+systemctl enable postgresql.service
+systemctl start postgresql.service
+```
+
+---
 
 ---
 
