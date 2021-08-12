@@ -12,7 +12,7 @@
 4. Chapter-03: Archiving in Master [Query](#Query-4)
 5. Chapter-04: Streaming Replication [Query](#Query-5)
 6. Chapter-05: Delay Replication [Query](#Query-6)
-7. Chapter-06:  Incident made in Master DB [Query](#Query-7)
+7. Chapter-06: Incident made in Master DB [Query](#Query-7)
 8. Chapter-07: PITR on Slave Server [Query](#Query-8)
 9. Chapter-08: Cautions [Query](#Query-9)
 
@@ -323,6 +323,8 @@ vi /var/lib/pgsql/13/data/pg_hba.conf
 ![](i/13.png)
 
 > Added the last line.
+
+> On above added line in **METHOD** Column we must use `PASSWORD ENCRYPTION` method same as the other **METHOD**. Here I have used `scram-sha-256` because other host are using this method. If other host use `md5` then I must use `md5` for my host.
 
 ---
 
