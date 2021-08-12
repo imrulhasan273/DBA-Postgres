@@ -623,7 +623,12 @@ postgres@data $ pg_basebackup -h <ip> -D /var/lib/pgsql/13/base_bkp/data$(date +
 
 ---
 
+### Caution 1: 
 
+- We must change permission of /var/mnt/archive_wal_dir/ folder to all in order to perform PITR
 
+### Caution 1
 
+- Slave Server is not performing like a time lagged server after PITR. So we need to take the basebackup again to set up Replication.
 
+---
