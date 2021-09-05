@@ -23,7 +23,7 @@ listen_address = '*'
 
 ---
 
-## **Foreign Data Wrapper MySQL --> PostgreSQL
+## **Foreign Data Wrapper MySQL --> PostgreSQL**
 
 ---
 
@@ -31,7 +31,7 @@ listen_address = '*'
 
 ---
 
-## **Foreign Data Wrapper PostgreSQL --> PostgreSQL
+## **Foreign Data Wrapper PostgreSQL --> PostgreSQL**
 
 ---
 
