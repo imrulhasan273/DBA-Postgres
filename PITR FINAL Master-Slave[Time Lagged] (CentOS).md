@@ -632,3 +632,4 @@ postgres@data $ pg_basebackup -h <ip> -D /var/lib/pgsql/13/base_bkp/data$(date +
 - Slave Server is not performing like a time lagged server after PITR. So we need to take the basebackup again to set up Replication.
 
 ---
+
