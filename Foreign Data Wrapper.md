@@ -1,8 +1,4 @@
-# **Extract Transform and Load**
-
----
-
-## **Postgres in Linux Server to DBeaver Connection on other PC**
+# **Postgres in Linux Server to DBeaver Connection on other PC**
 
 ---
 
@@ -42,6 +38,10 @@ listen_address = '*'
 ```sql
 CREATE EXTENSION postgres_fdw SCHEMA public ;
 ```
+
+---
+
+
 
 
 
